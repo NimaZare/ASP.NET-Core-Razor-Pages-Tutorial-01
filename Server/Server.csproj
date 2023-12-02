@@ -19,4 +19,8 @@
 	  <Folder Include="wwwroot\lib\" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <None Include="Pages\Shared\PartialViews\Rtl\_StyleSheets.cshtml" />
+	</ItemGroup>
+
 </Project>
