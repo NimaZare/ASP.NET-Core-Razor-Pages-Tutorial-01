@@ -1,27 +1,27 @@
 ﻿@page
 @model Server.Pages.IndexModel
 @{
-	var title = "خانه";
-
-	ViewData["Title"] = title;
+    var pageTitle = Resources.PageTitles.Index;
+    ViewData["PageTitle"] = pageTitle;
 }
 
 <h3>
-	@(title)
+    @(pageTitle)
 </h3>
+<hr />
 
+<ul dir="ltr">
+    <li><a asp-page="Admin/Cultures01/Index">Admin/Cultures01/Index</a></li>
+</ul>
 <hr />
 
 <div class="row">
-	<div class="col">
-		سورس‌ کد این پروژه را می‌توانید از نشانی ذیل دانلود نمایید:
-
-		<br />
-
-		<div dir="ltr">
-			<a href="https://github.com/NimaZare" target="_blank">https://github.com/NimaZare</a>
-		</div>
-	</div>
+    <div class="col">
+        @(Resources.DataDictionary.SourceCode)
+        <br />
+        <div dir="ltr">
+            <a href="https://github.com/NimaZare" target="_blank">https://github.com/NimaZare</a>
+        </div>
+    </div>
 </div>
-
 <hr />

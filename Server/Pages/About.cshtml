@@ -1,26 +1,23 @@
 ﻿@page
 @model Server.Pages.AboutModel
 @{
-	var title = "درباره ما";
-
-	ViewData["Title"] = title;
+	var pageTitle = Resources.PageTitles.About;
+	ViewData["PageTitle"] = pageTitle;
 }
 
 <h3>
-	@(title)
+	@(pageTitle)
 </h3>
-
 <hr />
 
 <div class="row">
 	<div class="col">
-		من نیما زارع هستم، متولد آذر‌ماه ١٣٧٣
-		و
-		دانشجوی دوره ASP.NET Core Razor Pages
 	</div>
 	<div class="col">
-		<img src="~/images/Nima.jpg" alt="Nima Zare" asp-append-version=true />
+		@(Resources.DataDictionary.SiteAuthor)
+	</div>
+	<div class="col">
+		<img src="~/images/Nima.jpg" alt="@(Resources.DataDictionary.SiteAuthor)" asp-append-version=true />
 	</div>
 </div>
-
 <hr />

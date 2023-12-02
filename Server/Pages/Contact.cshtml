@@ -1,33 +1,31 @@
 ﻿@page
 @model Server.Pages.ContactModel
 @{
-	var title = "تماس با ما";
-
-	ViewData["Title"] = title;
+	var pageTitle = Resources.PageTitles.Contact;
+	ViewData["PageTitle"] = pageTitle;
 }
 
 <h3>
-	@(title)
+	@(pageTitle)
 </h3>
-
 <hr />
 
 <div class="row">
 	<div class="col">
-		شماره تلفن همراه:
-		<a href="tel:09351551295">٠٩٣٥١٥٥١٢٩٥</a>
+		@(Resources.DataDictionary.CellPhoneNumber):
+		<a href="tel:09351551295">09351551295</a>
 		<br />
-		نشانی پست الکترونیک:
+		@(Resources.DataDictionary.EmailAddress):
 		<a href="mailto:info@nimazare.net" target="_blank">info@nimazare.net</a>
 		<br />
-		نشانی وب‌سایت:
+		@(Resources.DataDictionary.Blog):
 		<a href="https://nimazare.net" target="_blank">www.nimazare.net</a>
 
 		<hr />
 	</div>
 	<div class="col">
 		<h5>
-			شبکه‌های اجتماعی من
+			@(Resources.DataDictionary.SocialNetworks)
 		</h5>
 
 		<ul dir="ltr">
