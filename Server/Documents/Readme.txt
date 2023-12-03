@@ -1,4 +1,8 @@
-﻿*** my notes ***
+﻿
+			My Notes For Project
+**************************************************
+**************************************************
+**************************************************
 
 1)
 	Run application and check it
@@ -53,6 +57,20 @@
 		DataDictionary.resx		(Public)(Run custom tool)
 		DataDictionary.fa.resx	(No code generation)
 
+		<ItemGroup>
+			<Compile Update="DataDictionary.Designer.cs">
+				<DesignTime>True</DesignTime>
+				<AutoGen>True</AutoGen>
+				<DependentUpon>DataDictionary.resx</DependentUpon>
+			</Compile>
+		</ItemGroup>
+
+		<ItemGroup>
+			<EmbeddedResource Update="DataDictionary.resx">
+				<Generator>PublicResXFileCodeGenerator</Generator>
+				<LastGenOutput>DataDictionary.Designer.cs</LastGenOutput>
+			</EmbeddedResource>
+		</ItemGroup>
 7)
 	Use resources in below files:
 
@@ -113,6 +131,8 @@
 
 
 **************************************************
+**************************************************
+**************************************************
 
 1)
 	Infrastructure:
@@ -167,7 +187,218 @@
 						Description
 
 
+**************************************************
+**************************************************
+**************************************************
+
+1) In 'Shared' solution folder -> In 'Resources' project:
+
+	- Change file names: 'fa' to 'fa-IR'
+
+2) In 'Program.cs':
+
+	- Before 'var app = builder.Build();':
+
+// **************************************************
+builder.Services.Configure<RequestLocalizationOptions>(options =>
+{
+	var supportedCultures = new[]
+	{
+		new System.Globalization.CultureInfo(name: "fa-IR"),
+		new System.Globalization.CultureInfo(name: "en-US"),
+	};
+
+	options.SupportedCultures = supportedCultures;
+	options.SupportedUICultures = supportedCultures;
+
+	options.DefaultRequestCulture =
+		new Microsoft.AspNetCore.Localization
+		.RequestCulture(culture: "fa-IR", uiCulture: "fa-IR");
+});
+// **************************************************
+
+	- After 'var app = builder.Build();':
+
+// **************************************************
+// UseMiddleware -> using Microsoft.AspNetCore.Builder;
+//app.UseMiddleware
+//	<Infrastructure.Middlewares.CultureCookieHandlerMiddleware>();
+
+// UseCultureCookie() -> using Infrastructure.Middlewares;
+app.UseCultureCookie();
+// **************************************************
+
+3) In 'Infrastructure' Folder -> In 'Middlewares' Folder -> In 'CultureCookieHandlerMiddleware.cs' File:
+
+	- Rename: CultureCookieHandlingMiddleware -> CultureCookieHandlerMiddleware
+
+	- Injection in Constructor:
+
+		Microsoft.Extensions.Options.IOptions
+			<Microsoft.AspNetCore.Builder.RequestLocalizationOptions> requestLocalizationOptions
+
+4) In 'Infrastructure' Folder -> In 'Middlewares' Folder:
+
+	- Check 'ExtensionMethods.cs' File:
+
+5) In 'Pages' Folder -> In 'ChangeCulture.cshtml.cs' File:
+
+	- Injection in Constructor:
+
+		Microsoft.Extensions.Options.IOptions
+			<Microsoft.AspNetCore.Builder.RequestLocalizationOptions> requestLocalizationOptions
+
+6) In 'Pages' Folder -> In 'Shared' Folder -> In 'PartialViews' Folder -> In '_ChangeCulture.cshtml' File:
+
+	@inject Microsoft.Extensions.Options.IOptions
+		<Microsoft.AspNetCore.Builder.RequestLocalizationOptions>? requestLocalizationOptions
+
+7) In 'Pages' Folder -> In 'Shared' Folder -> In 'Layouts' Folder -> In 'Ltr' Folder -> In '_Layout.cshtml' File:
+
+	var currentCultureName =
+		System.Threading.Thread
+		.CurrentThread.CurrentUICulture.Name;
+
+8) In 'Pages' Folder -> In 'Shared' Folder -> In 'Layouts' Folder -> In 'Rtl' Folder -> In '_Layout.cshtml' File:
+
+	var currentCultureName =
+		System.Threading.Thread
+		.CurrentThread.CurrentUICulture.Name;
+
+9) In 'Pages' Folder -> In 'Shared' Folder -> In '_ViewStart.cshtml' File:
+
+	کماکان همان است و تغییر نمی‌دهیم
+	var currentCultureName =
+		System.Threading.Thread.CurrentThread
+		.CurrentUICulture.TwoLetterISOLanguageName;
 
 
+**************************************************
+**************************************************
+**************************************************
 
-********* END *********
+1) Update 'appsettings.Development.json' File and add some key/value
+
+2) In 'Infrastructure' Folder -> In 'Settings' Folder:
+
+	- Create 'CultureSettings.cs' File
+	- Create 'ApplicationSettings.cs' File
+
+3) Edit 'Program.cs' File
+
+	// **************************************************
+	// Configure() -> using Microsoft.Extensions.DependencyInjection;
+	builder.Services.Configure<Infrastructure.Settings.ApplicationSettings>
+		(builder.Configuration.GetSection(key: Infrastructure.Settings.ApplicationSettings.KeyName));
+	// **************************************************
+
+4) In 'Infrastructure' Folder -> In 'Middlewares' Folder
+
+	- Edit 'CultureCookieHandlerMiddleware.cs' File
+	
+5) In 'Pages' Folder:
+
+	- Edit 'ChangeCulture.cshtml.cs' File
+
+6) In 'Pages' Folder -> In 'Shared' Folder -> In 'PartialViews' Folder:
+
+	- Edit '_ChangeCulture.cshtml' File
+
+Tanx Mr. Sadegh Dehghani
+
+7) In 'Pages' Folder:
+
+	- Edit '_ViewStart.cshtml' File
+**************************************************
+**************************************************
+**************************************************
+
+1) Install Packages:
+
+	In 'Persistence':
+
+		Microsoft.EntityFrameworkCore.SqlServer
+
+			Microsoft.Data.SqlClient
+			Microsoft.EntityFrameworkCore.Relational
+				Microsoft.EntityFrameworkCore
+				Microsoft.Extensions.Configuration.Abstractions
+
+		Microsoft.EntityFrameworkCore.Tools
+
+			Microsoft.EntityFrameworkCore.Design
+				Humanizer.Core
+				Microsoft.EntityFrameworkCore.Relational
+
+		Microsoft.EntityFrameworkCore.Proxies
+
+			Castle.Core
+			Microsoft.EntityFrameworkCore
+
+2)
+	Domain Models -> Domain -> Culture01
+
+	Data Access Layer -> Persistence -> DatabaseContext01
+
+		Database.EnsureDeleted(); 
+		Database.EnsureCreated();
+
+	Presentation Layer -> Server -> Pages -> Admin -> Cultures01 -> Index
+
+	Presentation Layer -> Server -> appsettings.Development.json -> ConnectionStrings -> ConnectionString01
+
+	Presentation Layer -> Server -> Program.cs ->
+
+		var connectionString =
+			builder.Configuration.GetConnectionString("ConnectionString01");
+
+	Presentation Layer -> Server -> Program.cs ->
+
+		builder.Services.AddDbContext<Persistence.DatabaseContext01>(options =>
+		{
+			options
+				// using Microsoft.EntityFrameworkCore;
+				.UseLazyLoadingProxies()
+
+				// using Microsoft.EntityFrameworkCore;
+				.UseSqlServer(connectionString: connectionString);
+		});
+
+
+**************************************************
+**************************************************
+**************************************************
+
+1)
+	Domain Models -> Domain -> Culture02
+
+	Data Access Layer -> Persistence -> DatabaseContext02 [Database.EnsureCreated();]
+
+	Presentation Layer -> Server -> Pages -> Admin -> Cultures02 -> Index
+
+	Presentation Layer -> Server -> appsettings.Development.json -> ConnectionStrings -> ConnectionString02
+
+	Presentation Layer -> Server -> Program.cs ->
+
+		var connectionString =
+			builder.Configuration.GetConnectionString("ConnectionString02");
+
+2)
+	Domain Models -> Domain -> Culture03
+
+	Data Access Layer -> Persistence -> DatabaseContext03 [Database.EnsureCreated();]
+
+	Presentation Layer -> Server -> Pages -> Admin -> Cultures02 -> Index
+
+	Presentation Layer -> Server -> appsettings.Development.json -> ConnectionStrings -> ConnectionString03
+
+	Presentation Layer -> Server -> Program.cs ->
+
+		var connectionString =
+			builder.Configuration.GetConnectionString("ConnectionString03");
+
+
+**************************************************
+**************************************************
+**************************************************
+					End Notes
