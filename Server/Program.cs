@@ -1,6 +1,11 @@
+using Infrastructure.Middlewares;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddRazorPages();
+
+builder.Services.Configure<Infrastructure.Settings.ApplicationSettings>
+    (builder.Configuration.GetSection(key: Infrastructure.Settings.ApplicationSettings.KeyName));
 
 var app = builder.Build();
 
@@ -16,6 +21,7 @@ app.UseStaticFiles();
 app.UseRouting();
 //app.UseAuthentication();
 //app.UseAuthorization();
+app.UseCultureCookie();
 app.MapRazorPages();
 
 app.Run();
